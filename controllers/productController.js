@@ -8,12 +8,13 @@ import orderModel from "../models/orderModel.js";
 import dotenv from "dotenv";
 import path from "path";
 
+
 dotenv.config();
 //payment gateway
 var gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
-  publicKey:  process.env.BRAINTREE_PUBLIC_KEY,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
   privateKey: process.env.BRAINTREE_PRIVATE_KEY,
 });
 
@@ -119,6 +120,7 @@ export const updateProductController = async (req, res) => {
       products.photo.contentType = photo.type;
     }
     await products.save();
+    //toast.success("Product Updated Successfully");
     res.status(201).send({
       success: true,
       message: "Product updated Successfully",
@@ -381,9 +383,11 @@ export const braintreeTokenController = async (req, res) => {
 //payment
 export const braintreePaymentController = async (req, res) => {
   try {
-    const { nonce,cart } = req.body;
+    const { nonce, cart } = req.body;
     let total = 0;
-    cart.map((i) => {total += i.price});
+    cart.map((i) => {
+      total += i.price;
+    });
     let newTransaction = gateway.transaction.sale(
       {
         amount: total,
@@ -409,7 +413,6 @@ export const braintreePaymentController = async (req, res) => {
     console.log(error);
   }
 };
-
 
 // export const mytest = async (req, res) => {
 //   try {

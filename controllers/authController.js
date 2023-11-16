@@ -238,7 +238,7 @@ export const getAllOrdersController = async (req, res) => {
 export const orderStatusController = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { Status } = req.body;
+    const { status } = req.body;
     const orders = await orderModel.findByIdAndUpdate(
       orderId,
       { status },
